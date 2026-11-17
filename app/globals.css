@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* Cape Town Trips design tokens (from the style guide) */
+@theme {
+  --color-ocean-teal: #0e7c86;
+  --color-cape-slate: #2f4858;
+  --color-sunbird-gold: #f2b134;
+  --color-sun-wash: #f8dfaa;
+  --color-seafoam: #bfe3dc;
+  --color-shell: #faf6f0;
+  --color-ink-soft: #61727b;
+  --color-footer: #243a48;
+  --color-line: rgb(47 72 88 / 0.14);
+
+  --radius-card: 22px;
+  --radius-photo: 30px;
+  --shadow-lift: 0 18px 50px rgb(47 72 88 / 0.1);
+
+  /* header switches to the mobile menu below this width */
+  --breakpoint-nav: 56.25rem;
+}
+
+/* Fonts are loaded in app/layout.tsx with next/font */
+@theme inline {
+  --font-heading: var(--font-jakarta), "Segoe UI", Arial, sans-serif;
+  --font-body: var(--font-nunito), "Segoe UI", Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
+  body {
+    @apply bg-shell font-body text-base leading-[1.65] text-cape-slate;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading leading-[1.12] tracking-[-0.04em];
+  }
+  p {
+    @apply text-ink-soft;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-sunbird-gold);
+    outline-offset: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Page width used by every section */
+@utility container-page {
+  margin-inline: auto;
+  width: min(1160px, calc(100% - 48px));
+  @media (width < 40rem) {
+    width: min(100% - 36px, 1160px);
+  }
+}
