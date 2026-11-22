@@ -1,6 +1,14 @@
 import { Button } from "@/components/Button";
 import { ContactCta } from "@/components/ContactCta";
 import { Eyebrow } from "@/components/Eyebrow";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata = pageMeta({
+  title: "Private & Small-Group Cape Town Tours | Cape Town Trips",
+  description:
+    "Authentic Cape Town tours led by local guides Glen and Ryan Manning. Cape Point, winelands, Robben Island, safari and more. Plan your trip.",
+  path: "/",
+});
 
 // Placeholder homepage. We'll build the real one next, page by page.
 export default function HomePage() {

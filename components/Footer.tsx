@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const links = [
   { href: "/about", label: "About" },
-  { href: "/#tours", label: "Tours" },
+  { href: "/tours", label: "Tours" },
   { href: "/#explore", label: "Explore" },
   { href: "/#contact", label: "Contact" },
 ];
@@ -23,7 +23,7 @@ export function Footer() {
             ))}
           </nav>
         </div>
-        <p className="mt-[18px] text-[0.82rem] !text-white/55">
+        <p className="mt-[18px] text-[0.82rem] text-white/55!">
           © {new Date().getFullYear()} Cape Town Trips. All rights reserved.
         </p>
       </div>

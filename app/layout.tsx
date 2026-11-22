@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Nunito_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { jsonLd, noindex, orgSchema } from "@/lib/seo";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -19,19 +21,25 @@ const nunito = Nunito_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://capetowntrips.com"),
+  metadataBase: new URL(site.url),
   title: {
-    default: "Cape Town Trips | Discover Cape Town",
+    default: "Private & Small-Group Cape Town Tours | Cape Town Trips",
     template: "%s | Cape Town Trips",
   },
   description:
-    "Discover Cape Town with Cape Town Trips. Explore unforgettable tours, local experiences and the best of the Mother City.",
+    "Authentic Cape Town tours led by local guides Glen and Ryan Manning. Cape Point, winelands, Robben Island, safari and more. Plan your trip.",
+  applicationName: site.name,
+  openGraph: { siteName: site.name, locale: "en_ZA", type: "website" },
+  twitter: { card: "summary_large_image" },
+  // Staging and preview sites stay out of search (see NOINDEX in .env.example)
+  robots: noindex ? { index: false, follow: false } : undefined,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${nunito.variable}`}>
+    <html lang="en-ZA" className={`${jakarta.variable} ${nunito.variable}`}>
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(orgSchema()) }} />
         <Header />
         <main>{children}</main>
         <Footer />

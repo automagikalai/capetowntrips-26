@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import { ContactCta } from "@/components/ContactCta";
 import { Eyebrow } from "@/components/Eyebrow";
 import { PersonSection } from "@/components/PersonSection";
 import { PortraitCard } from "@/components/PortraitCard";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About Us",
+export const metadata = pageMeta({
+  title: "About Us: Local Cape Town Tour Guides | Cape Town Trips",
   description:
-    "Meet Glen and Ryan Manning, the father-and-son team behind Cape Town Trips. Local knowledge, hidden gems and warm South African hospitality.",
-};
+    "Meet Glen and Ryan Manning, the father-and-son team behind Cape Town Trips, and find out why we show visitors the Cape we know.",
+  path: "/about",
+});
 
 const reasons = [
   {
@@ -60,7 +61,7 @@ export default function AboutPage() {
           on the beautiful game (having been lucky enough to attend four FIFA World Cups in
           person!).
         </p>
-        <p className="my-[26px] border-l-4 border-sunbird-gold pl-[18px] font-heading text-[1.3rem] font-bold leading-[1.3] tracking-[-0.02em] !text-cape-slate">
+        <p className="my-[26px] border-l-4 border-sunbird-gold pl-[18px] font-heading text-[1.3rem] font-bold leading-[1.3] tracking-[-0.02em] text-cape-slate!">
           In an age where tours can just as easily be booked online, why start a travel business,
           you might ask?
         </p>
