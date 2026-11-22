@@ -68,3 +68,5 @@ Built from the keyword and metadata plan. Each tour page has:
 - Tailwind colours: `ocean-teal`, `cape-slate`, `sunbird-gold`, `seafoam`, `shell`, `sun-wash`, `ink-soft`. Fonts: `font-heading`, `font-body`.
 - Glen's photo on the About page: in `app/about/page.tsx`, add `src="/images/glen-manning.jpg"` to his `PortraitCard`.
 - The Explore and Contact menu links point to `/#explore` and `/#contact`; they work once the homepage has those sections.
+
+- Cape Town Trips – Initial deployment
