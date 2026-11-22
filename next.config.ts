@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["172.20.6.188", "localhost"],
+  allowedDevOrigins: ["192.168.43.161", "172.20.6.188", "localhost"],
   images: {
     // AVIF first, WebP as fallback: much smaller than JPEG for the same quality
     formats: ["image/avif", "image/webp"],
