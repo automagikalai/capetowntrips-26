@@ -15,24 +15,17 @@ const topLinks = [
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [toursOpen, setToursOpen] = useState(false);
-  const toursRef = useRef<HTMLDivElement>(null);
+  const [mobileToursOpen, setMobileToursOpen] = useState(false);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setOpen(false); setToursOpen(false); }
-    };
-    const onClickOutside = (e: MouseEvent) => {
-      if (toursRef.current && !toursRef.current.contains(e.target as Node)) {
-        setToursOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        setMobileToursOpen(false);
       }
     };
     document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onClickOutside);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onClickOutside);
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, []);
 
   const toursActive = pathname === "/tours" || pathname.startsWith("/tours/");
@@ -80,8 +73,8 @@ export function Header() {
             open ? "flex" : "hidden nav:flex"
           } absolute inset-x-0 top-full flex-col items-stretch border-b border-line bg-shell px-6 pb-6 pt-[18px] shadow-[0_18px_24px_rgb(47_72_88/0.08)] nav:static nav:ml-auto nav:flex-row nav:items-center nav:gap-[clamp(16px,2.2vw,30px)] nav:border-0 nav:bg-transparent nav:p-0 nav:shadow-none`}
         >
-          {/* Tours dropdown — desktop (pure CSS hover bridge) / mobile (flat list) */}
-          <div ref={toursRef} className="group relative py-3 max-nav:contents">
+          {/* Tours dropdown — desktop (pure CSS hover bridge) / mobile (collapsible accordion) */}
+          <div className="group relative py-3 max-nav:contents">
             {/* Desktop trigger */}
             <Link
               href="/tours"
@@ -104,7 +97,7 @@ export function Header() {
               </svg>
             </Link>
 
-            {/* Dropdown panel — pure CSS hover with seamless bridge */}
+            {/* Dropdown panel — pure CSS hover with seamless bridge (desktop) */}
             <div className="absolute left-0 top-full pt-1.5 hidden nav:block opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-150 z-50">
               <div className="w-[320px] rounded-2xl border border-line bg-white p-2 shadow-lift">
                 <Link
@@ -131,29 +124,52 @@ export function Header() {
               </div>
             </div>
 
-            {/* Tours links — mobile (flat list) */}
-            <div className="nav:hidden">
-              <Link
-                href="/tours"
-                onClick={() => setOpen(false)}
-                className={`block whitespace-nowrap text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal px-2 py-[13px] ${
-                  pathname === "/tours" ? "text-ocean-teal" : "text-cape-slate"
+            {/* Tours accordion — mobile (requires clicking to expand) */}
+            <div className="nav:hidden border-b border-line/60 pb-1">
+              <button
+                type="button"
+                onClick={() => setMobileToursOpen((prev) => !prev)}
+                className={`flex w-full items-center justify-between text-left text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal px-2 py-[13px] ${
+                  toursActive ? "text-ocean-teal" : "text-cape-slate"
                 }`}
+                aria-expanded={mobileToursOpen}
               >
-                All Tours
-              </Link>
-              {tours.map((t) => (
-                <Link
-                  key={t.slug}
-                  href={`/tours/${t.slug}`}
-                  onClick={() => setOpen(false)}
-                  className={`block pl-5 text-[0.88rem] font-semibold transition-colors hover:text-ocean-teal px-2 py-[10px] ${
-                    pathname === `/tours/${t.slug}` ? "text-ocean-teal" : "text-cape-slate/80"
-                  }`}
+                <span>Tours</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                  className={`transition-transform duration-200 ${mobileToursOpen ? "rotate-180 text-ocean-teal" : "text-cape-slate/70"}`}
                 >
-                  {t.title}
-                </Link>
-              ))}
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              {mobileToursOpen && (
+                <div className="flex flex-col gap-1 pb-2 pl-3">
+                  <Link
+                    href="/tours"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-2 py-2 text-[0.84rem] font-bold text-ocean-teal hover:bg-seafoam/60"
+                  >
+                    View all tours →
+                  </Link>
+                  {tours.map((t) => (
+                    <Link
+                      key={t.slug}
+                      href={`/tours/${t.slug}`}
+                      onClick={() => setOpen(false)}
+                      className={`block rounded-lg px-2 py-2 text-[0.88rem] font-semibold transition-colors hover:bg-seafoam/60 hover:text-ocean-teal ${
+                        pathname === `/tours/${t.slug}` ? "bg-seafoam/40 font-bold text-ocean-teal" : "text-cape-slate/80"
+                      }`}
+                    >
+                      <span>{t.title}</span>
+                      <span className="block text-[0.75rem] text-ink-soft">{t.duration}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -176,13 +192,38 @@ export function Header() {
             );
           })}
 
-          <Link
-            href="/tours"
-            onClick={() => setOpen(false)}
-            className="whitespace-nowrap rounded-full bg-ocean-teal px-[22px] py-[11px] text-[0.94rem] font-extrabold text-white transition-colors hover:bg-cape-slate max-nav:mt-2 max-nav:text-center"
-          >
-            Book
-          </Link>
+          {/* Book button + Contact info (phone & email) */}
+          <div className="flex flex-col max-nav:mt-2 nav:flex-row nav:items-center nav:gap-4">
+            <Link
+              href="/tours"
+              onClick={() => setOpen(false)}
+              className="whitespace-nowrap rounded-full bg-ocean-teal px-[22px] py-[11px] text-[0.94rem] font-extrabold text-white transition-colors hover:bg-cape-slate max-nav:text-center shrink-0"
+            >
+              Book
+            </Link>
+
+            <div className="flex flex-col text-[0.82rem] leading-snug max-nav:mt-3 max-nav:border-t max-nav:border-line max-nav:pt-3 nav:border-l nav:border-line/80 nav:pl-4">
+              <a
+                href="tel:+27774742397"
+                className="inline-flex items-center gap-1.5 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-ocean-teal shrink-0" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                +27 77 474 2397
+              </a>
+              <a
+                href="mailto:gmanningza@gmail.com"
+                className="inline-flex items-center gap-1.5 font-semibold text-ink-soft hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-ocean-teal shrink-0" aria-hidden="true">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                gmanningza@gmail.com
+              </a>
+            </div>
+          </div>
         </nav>
       </div>
     </header>

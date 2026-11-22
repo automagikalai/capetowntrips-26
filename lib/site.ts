@@ -5,11 +5,11 @@
 export const site = {
   name: "Cape Town Trips",
   url: "https://capetowntrips.com",
-  email: "hello@capetowntrips.com",
+  email: "gmanningza@gmail.com",
   /** Shown as written, e.g. "+27 82 000 0000" */
-  phone: "",
+  phone: "+27 77 474 2397",
   /** Digits only with country code, e.g. "27820000000" */
-  whatsapp: "",
+  whatsapp: "27774742397",
   hosts: "Glen & Ryan Manning",
   /** CONFIRM: is every price per person, or per group/vehicle? */
   priceBasis: "per person",
