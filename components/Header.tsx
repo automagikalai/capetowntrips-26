@@ -28,6 +28,18 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      setMobileToursOpen(false);
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const toursActive = pathname === "/tours" || pathname.startsWith("/tours/");
 
   return (
@@ -71,7 +83,7 @@ export function Header() {
           aria-label="Main navigation"
           className={`${
             open ? "flex" : "hidden nav:flex"
-          } absolute inset-x-0 top-full flex-col items-stretch border-b border-line bg-shell px-6 pb-6 pt-[18px] shadow-[0_18px_24px_rgb(47_72_88/0.08)] nav:static nav:ml-auto nav:flex-row nav:items-center nav:gap-[clamp(16px,2.2vw,30px)] nav:border-0 nav:bg-transparent nav:p-0 nav:shadow-none`}
+          } absolute inset-x-0 top-full flex-col items-stretch border-b border-line bg-shell px-6 pb-12 pt-[18px] shadow-[0_18px_24px_rgb(47_72_88/0.08)] max-nav:max-h-[calc(100dvh-78px)] max-sm:max-h-[calc(100dvh-70px)] max-nav:overflow-y-auto max-nav:overscroll-contain nav:static nav:ml-auto nav:flex-row nav:items-center nav:gap-[clamp(16px,2.2vw,30px)] nav:border-0 nav:bg-transparent nav:p-0 nav:shadow-none nav:overflow-visible`}
         >
           {/* Tours dropdown — desktop (pure CSS hover bridge) / mobile (collapsible accordion) */}
           <div className="group relative py-3 max-nav:contents">
@@ -129,29 +141,34 @@ export function Header() {
               <button
                 type="button"
                 onClick={() => setMobileToursOpen((prev) => !prev)}
-                className={`flex w-full items-center justify-between text-left text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal px-2 py-[13px] ${
+                className={`flex w-full cursor-pointer items-center justify-between text-left text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal px-2 py-[13px] ${
                   toursActive ? "text-ocean-teal" : "text-cape-slate"
                 }`}
                 aria-expanded={mobileToursOpen}
               >
                 <span>Tours</span>
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  aria-hidden="true"
-                  className={`transition-transform duration-200 ${mobileToursOpen ? "rotate-180 text-ocean-teal" : "text-cape-slate/70"}`}
-                >
-                  <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <span className="flex items-center gap-1.5 text-[0.8rem] font-bold text-ink-soft">
+                  <span className="rounded-full bg-seafoam px-2 py-0.5 text-[0.75rem] text-ocean-teal">
+                    {mobileToursOpen ? "Collapse" : "Explore"}
+                  </span>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden="true"
+                    className={`transition-transform duration-200 ${mobileToursOpen ? "rotate-180 text-ocean-teal" : "text-cape-slate/70"}`}
+                  >
+                    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
               </button>
               {mobileToursOpen && (
-                <div className="flex flex-col gap-1 pb-2 pl-3">
+                <div className="flex flex-col gap-1 border-l-2 border-ocean-teal/40 my-1 ml-3 pl-3 pb-2">
                   <Link
                     href="/tours"
                     onClick={() => setOpen(false)}
-                    className="block rounded-lg px-2 py-2 text-[0.84rem] font-bold text-ocean-teal hover:bg-seafoam/60"
+                    className="block rounded-lg px-2 py-2 text-[0.84rem] font-extrabold text-ocean-teal hover:bg-seafoam/60"
                   >
                     View all tours →
                   </Link>
@@ -164,8 +181,8 @@ export function Header() {
                         pathname === `/tours/${t.slug}` ? "bg-seafoam/40 font-bold text-ocean-teal" : "text-cape-slate/80"
                       }`}
                     >
-                      <span>{t.title}</span>
-                      <span className="block text-[0.75rem] text-ink-soft">{t.duration}</span>
+                      <span className="block leading-snug">{t.title}</span>
+                      <span className="block text-[0.75rem] text-ink-soft mt-0.5">{t.duration}</span>
                     </Link>
                   ))}
                 </div>
@@ -193,34 +210,38 @@ export function Header() {
           })}
 
           {/* Book button + Contact info (phone & email) */}
-          <div className="flex flex-col max-nav:mt-2 nav:flex-row nav:items-center nav:gap-4">
+          <div className="flex flex-col max-nav:mt-4 max-nav:pt-3 max-nav:border-t max-nav:border-line/70 nav:flex-row nav:items-center nav:gap-4">
             <Link
               href="/tours"
               onClick={() => setOpen(false)}
-              className="whitespace-nowrap rounded-full bg-ocean-teal px-[22px] py-[11px] text-[0.94rem] font-extrabold text-white transition-colors hover:bg-cape-slate max-nav:text-center shrink-0"
+              className="whitespace-nowrap rounded-full bg-ocean-teal px-[22px] py-[12px] text-[0.94rem] font-extrabold text-white transition-colors hover:bg-cape-slate text-center shrink-0 shadow-sm"
             >
               Book
             </Link>
 
-            <div className="flex flex-col text-[0.82rem] leading-snug max-nav:mt-3 max-nav:border-t max-nav:border-line max-nav:pt-3 nav:border-l nav:border-line/80 nav:pl-4">
+            <div className="flex flex-col text-[0.84rem] leading-snug max-nav:mt-4 max-nav:bg-white max-nav:rounded-xl max-nav:p-3.5 max-nav:border max-nav:border-line/80 max-nav:gap-2.5 nav:border-l nav:border-line/80 nav:pl-4">
               <a
                 href="tel:+27774742397"
-                className="inline-flex items-center gap-1.5 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
+                className="inline-flex items-center gap-2 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-ocean-teal shrink-0" aria-hidden="true">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-                +27 77 474 2397
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </span>
+                <span>+27 77 474 2397</span>
               </a>
               <a
                 href="mailto:gmanningza@gmail.com"
-                className="inline-flex items-center gap-1.5 font-semibold text-ink-soft hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
+                className="inline-flex items-center gap-2 font-semibold text-cape-slate hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
               >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-ocean-teal shrink-0" aria-hidden="true">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                  <polyline points="22,6 12,13 2,6" />
-                </svg>
-                gmanningza@gmail.com
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </span>
+                <span className="text-[0.82rem]">gmanningza@gmail.com</span>
               </a>
             </div>
           </div>
