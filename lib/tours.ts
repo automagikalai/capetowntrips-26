@@ -104,7 +104,7 @@ export const tours: Tour[] = [
       { q: "Can we do this outside the season?", a: "Yes. We’ll swap the whales for the coastline, wine country or local gems, whichever you’d prefer." },
     ],
     theme: "sea",
-    related: ["cape-point-penguins-tour", "hermanus-whale-watching-tour", "3-day-garden-route-tour"],
+    related: ["cape-point-penguins-tour", "day-safari-from-cape-town", "3-day-garden-route-tour"],
   },
   {
     slug: "cape-winelands-wine-tour",
@@ -365,12 +365,12 @@ export const getTour = (slug: string) => tours.find((t) => t.slug === slug);
 
 export function getRelated(tour: Tour) {
   const picks = (tour.related ?? [])
+    .filter((s) => s !== tour.slug)
     .map((s) => tours.find((t) => t.slug === s))
-    .filter((t): t is Tour => Boolean(t));
+    .filter((t): t is Tour => Boolean(t && t.slug !== tour.slug));
   if (picks.length >= 3) return picks.slice(0, 3);
-  const i = tours.findIndex((t) => t.slug === tour.slug);
-  const extra = [1, 2, 3, 4].map((n) => tours[(i + n) % tours.length]);
-  return [...picks, ...extra.filter((t) => !picks.includes(t))].slice(0, 3);
+  const others = tours.filter((t) => t.slug !== tour.slug && !picks.some((p) => p.slug === t.slug));
+  return [...picks, ...others].slice(0, 3);
 }
 
 /** FAQs every tour shares. These explain the enquiry-and-call booking process. */
