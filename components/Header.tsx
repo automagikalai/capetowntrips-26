@@ -29,17 +29,11 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  // Reset mobile tours accordion when menu closes
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+    if (!open) {
       setMobileToursOpen(false);
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, [open]);
 
   // Close mobile menu on route change
@@ -51,7 +45,7 @@ export function Header() {
   const toursActive = pathname === "/tours" || pathname.startsWith("/tours/");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-shell/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-line bg-shell shadow-sm">
       <div className="container-page flex min-h-[88px] items-center justify-between gap-7 max-nav:min-h-[78px] max-sm:min-h-[70px] max-sm:gap-3">
         {/* Logo */}
         <Link
@@ -195,12 +189,12 @@ export function Header() {
         </nav>
       </div>
 
-      {/* ================= MOBILE NAVIGATION DRAWER ================= */}
+      {/* ================= MOBILE NAVIGATION MENU (DROPDOWN) ================= */}
       {open && (
         <div
           id="mobile-navigation"
           aria-label="Mobile navigation"
-          className="nav:hidden fixed inset-x-0 top-[78px] max-sm:top-[70px] bottom-0 z-50 overflow-y-auto overscroll-contain bg-shell border-t border-line/60 px-6 pt-4 pb-24 shadow-2xl flex flex-col justify-between"
+          className="nav:hidden border-t border-line/70 bg-shell px-6 pt-3 pb-8 shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto flex flex-col"
         >
           <div className="flex flex-col">
             {/* Collapsible Tours Accordion */}
@@ -278,7 +272,7 @@ export function Header() {
           </div>
 
           {/* Book button & Direct Contact Cards at the bottom */}
-          <div className="mt-8 flex flex-col gap-4">
+          <div className="mt-6 flex flex-col gap-3">
             <Link
               href="/tours"
               onClick={() => setOpen(false)}
@@ -291,7 +285,7 @@ export function Header() {
               <span className="text-[0.75rem] font-bold tracking-wider text-ink-soft uppercase">Contact Glen &amp; Ryan</span>
               <a
                 href="tel:+27774742397"
-                className="flex items-center gap-3 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-1.5"
+                className="flex items-center gap-3 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-1"
               >
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -302,7 +296,7 @@ export function Header() {
               </a>
               <a
                 href="mailto:gmanningza@gmail.com"
-                className="flex items-center gap-3 font-semibold text-cape-slate hover:text-ocean-teal transition-colors py-1.5"
+                className="flex items-center gap-3 font-semibold text-cape-slate hover:text-ocean-teal transition-colors py-1"
               >
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
