@@ -3,10 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { tours } from "@/lib/tours";
 
-const topLinks = [
+const navLinks = [
   { href: "/about", label: "About" },
   { href: "/#contact", label: "Contact" },
   { href: "/#explore", label: "Explore" },
@@ -17,6 +17,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [mobileToursOpen, setMobileToursOpen] = useState(false);
 
+  // Close mobile menu on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -28,6 +29,7 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -40,11 +42,18 @@ export function Header() {
     };
   }, [open]);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setOpen(false);
+    setMobileToursOpen(false);
+  }, [pathname]);
+
   const toursActive = pathname === "/tours" || pathname.startsWith("/tours/");
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-shell/95 backdrop-blur-md">
       <div className="container-page flex min-h-[88px] items-center justify-between gap-7 max-nav:min-h-[78px] max-sm:min-h-[70px] max-sm:gap-3">
+        {/* Logo */}
         <Link
           href="/"
           aria-label="Cape Town Trips home"
@@ -61,10 +70,11 @@ export function Header() {
           />
         </Link>
 
+        {/* Mobile Hamburger Button */}
         <button
           type="button"
           aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-          aria-controls="primary-navigation"
+          aria-controls="mobile-navigation"
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
           className="inline-flex size-[46px] shrink-0 cursor-pointer items-center justify-center rounded-xl border border-line bg-white text-cape-slate nav:hidden"
@@ -78,21 +88,19 @@ export function Header() {
           </svg>
         </button>
 
+        {/* ================= DESKTOP NAVIGATION ================= */}
         <nav
           id="primary-navigation"
           aria-label="Main navigation"
-          className={`${
-            open ? "flex" : "hidden nav:flex"
-          } absolute inset-x-0 top-full flex-col items-stretch border-b border-line bg-shell px-6 pb-12 pt-[18px] shadow-[0_18px_24px_rgb(47_72_88/0.08)] max-nav:max-h-[calc(100dvh-78px)] max-sm:max-h-[calc(100dvh-70px)] max-nav:overflow-y-auto max-nav:overscroll-contain nav:static nav:ml-auto nav:flex-row nav:items-center nav:gap-[clamp(16px,2.2vw,30px)] nav:border-0 nav:bg-transparent nav:p-0 nav:shadow-none nav:overflow-visible`}
+          className="hidden nav:flex nav:items-center nav:gap-[clamp(16px,2.2vw,30px)] nav:ml-auto"
         >
-          {/* Tours dropdown — desktop (pure CSS hover bridge) / mobile (collapsible accordion) */}
-          <div className="group relative py-3 max-nav:contents">
-            {/* Desktop trigger */}
+          {/* Tours hover dropdown (desktop only) */}
+          <div className="group relative py-3">
             <Link
               href="/tours"
-              className={`hidden nav:inline-flex items-center gap-1.5 whitespace-nowrap text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal ${
+              className={`inline-flex items-center gap-1.5 whitespace-nowrap text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal ${
                 toursActive
-                  ? "text-ocean-teal nav:shadow-[0_3px_0_var(--color-sunbird-gold)]"
+                  ? "text-ocean-teal shadow-[0_3px_0_var(--color-sunbird-gold)]"
                   : "text-cape-slate"
               }`}
             >
@@ -109,12 +117,11 @@ export function Header() {
               </svg>
             </Link>
 
-            {/* Dropdown panel — pure CSS hover with seamless bridge (desktop) */}
-            <div className="absolute left-0 top-full pt-1.5 hidden nav:block opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-150 z-50">
+            {/* Dropdown panel */}
+            <div className="absolute left-0 top-full pt-1.5 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-150 z-50">
               <div className="w-[320px] rounded-2xl border border-line bg-white p-2 shadow-lift">
                 <Link
                   href="/tours"
-                  onClick={() => setOpen(false)}
                   className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[0.84rem] font-bold text-ocean-teal hover:bg-seafoam transition-colors"
                 >
                   View all tours →
@@ -124,7 +131,6 @@ export function Header() {
                   <Link
                     key={t.slug}
                     href={`/tours/${t.slug}`}
-                    onClick={() => setOpen(false)}
                     className="flex items-start gap-3 rounded-xl px-4 py-2.5 hover:bg-seafoam transition-colors"
                   >
                     <span className="flex-1">
@@ -135,21 +141,82 @@ export function Header() {
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Tours accordion — mobile (requires clicking to expand) */}
-            <div className="nav:hidden border-b border-line/60 pb-1">
+          {/* Top Links (About, Contact, Explore) */}
+          {navLinks.map(({ href, label }) => {
+            const active = pathname === href || pathname.startsWith(`${href}/`);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={`whitespace-nowrap text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal ${
+                  active
+                    ? "text-ocean-teal shadow-[0_3px_0_var(--color-sunbird-gold)]"
+                    : "text-cape-slate"
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
+
+          {/* Book Button */}
+          <Link
+            href="/tours"
+            className="whitespace-nowrap rounded-full bg-ocean-teal px-[22px] py-[11px] text-[0.94rem] font-extrabold text-white transition-colors hover:bg-cape-slate shrink-0"
+          >
+            Book
+          </Link>
+
+          {/* Contact Details (Desktop) */}
+          <div className="flex flex-col text-[0.82rem] leading-snug border-l border-line/80 pl-4">
+            <a
+              href="tel:+27774742397"
+              className="inline-flex items-center gap-1.5 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-0.5 whitespace-nowrap"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-ocean-teal shrink-0" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              +27 77 474 2397
+            </a>
+            <a
+              href="mailto:gmanningza@gmail.com"
+              className="inline-flex items-center gap-1.5 font-semibold text-ink-soft hover:text-ocean-teal transition-colors py-0.5 whitespace-nowrap"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-ocean-teal shrink-0" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              gmanningza@gmail.com
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      {/* ================= MOBILE NAVIGATION DRAWER ================= */}
+      {open && (
+        <div
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="nav:hidden fixed inset-x-0 top-[78px] max-sm:top-[70px] bottom-0 z-50 overflow-y-auto overscroll-contain bg-shell border-t border-line/60 px-6 pt-4 pb-24 shadow-2xl flex flex-col justify-between"
+        >
+          <div className="flex flex-col">
+            {/* Collapsible Tours Accordion */}
+            <div className="border-b border-line/60 pb-1">
               <button
                 type="button"
                 onClick={() => setMobileToursOpen((prev) => !prev)}
-                className={`flex w-full cursor-pointer items-center justify-between text-left text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal px-2 py-[13px] ${
+                className={`flex w-full cursor-pointer items-center justify-between text-left text-[1.05rem] font-extrabold transition-colors hover:text-ocean-teal px-2 py-3.5 ${
                   toursActive ? "text-ocean-teal" : "text-cape-slate"
                 }`}
                 aria-expanded={mobileToursOpen}
               >
                 <span>Tours</span>
-                <span className="flex items-center gap-1.5 text-[0.8rem] font-bold text-ink-soft">
-                  <span className="rounded-full bg-seafoam px-2 py-0.5 text-[0.75rem] text-ocean-teal">
-                    {mobileToursOpen ? "Collapse" : "Explore"}
+                <span className="flex items-center gap-2 text-[0.8rem] font-bold text-ink-soft">
+                  <span className="rounded-full bg-seafoam px-2.5 py-0.5 text-[0.75rem] text-ocean-teal font-extrabold">
+                    {mobileToursOpen ? "Hide" : "See Tours"}
                   </span>
                   <svg
                     width="16"
@@ -163,12 +230,14 @@ export function Header() {
                   </svg>
                 </span>
               </button>
+
+              {/* Collapsed list: ONLY rendered when mobileToursOpen is true */}
               {mobileToursOpen && (
-                <div className="flex flex-col gap-1 border-l-2 border-ocean-teal/40 my-1 ml-3 pl-3 pb-2">
+                <div className="flex flex-col gap-1 border-l-2 border-ocean-teal/40 my-1 ml-3 pl-3 pb-3">
                   <Link
                     href="/tours"
                     onClick={() => setOpen(false)}
-                    className="block rounded-lg px-2 py-2 text-[0.84rem] font-extrabold text-ocean-teal hover:bg-seafoam/60"
+                    className="block rounded-lg px-2.5 py-2 text-[0.88rem] font-extrabold text-ocean-teal hover:bg-seafoam/60"
                   >
                     View all tours →
                   </Link>
@@ -177,76 +246,76 @@ export function Header() {
                       key={t.slug}
                       href={`/tours/${t.slug}`}
                       onClick={() => setOpen(false)}
-                      className={`block rounded-lg px-2 py-2 text-[0.88rem] font-semibold transition-colors hover:bg-seafoam/60 hover:text-ocean-teal ${
-                        pathname === `/tours/${t.slug}` ? "bg-seafoam/40 font-bold text-ocean-teal" : "text-cape-slate/80"
+                      className={`block rounded-lg px-2.5 py-2 text-[0.92rem] font-semibold transition-colors hover:bg-seafoam/60 hover:text-ocean-teal ${
+                        pathname === `/tours/${t.slug}` ? "bg-seafoam/40 font-bold text-ocean-teal" : "text-cape-slate/85"
                       }`}
                     >
                       <span className="block leading-snug">{t.title}</span>
-                      <span className="block text-[0.75rem] text-ink-soft mt-0.5">{t.duration}</span>
+                      <span className="block text-[0.76rem] text-ink-soft mt-0.5">{t.duration}</span>
                     </Link>
                   ))}
                 </div>
               )}
             </div>
+
+            {/* Mobile Nav Links (About, Contact, Explore) */}
+            {navLinks.map(({ href, label }) => {
+              const active = pathname === href || pathname.startsWith(`${href}/`);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                  className={`block border-b border-line/40 text-[1.05rem] font-extrabold transition-colors hover:text-ocean-teal px-2 py-3.5 ${
+                    active ? "text-ocean-teal" : "text-cape-slate"
+                  }`}
+                >
+                  {label}
+                </Link>
+              );
+            })}
           </div>
 
-          {topLinks.map(({ href, label }) => {
-            const active = pathname === href || pathname.startsWith(`${href}/`);
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-current={active ? "page" : undefined}
-                onClick={() => setOpen(false)}
-                className={`whitespace-nowrap text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal max-nav:px-2 max-nav:py-[13px] ${
-                  active
-                    ? "text-ocean-teal nav:shadow-[0_3px_0_var(--color-sunbird-gold)]"
-                    : "text-cape-slate"
-                }`}
-              >
-                {label}
-              </Link>
-            );
-          })}
-
-          {/* Book button + Contact info (phone & email) */}
-          <div className="flex flex-col max-nav:mt-4 max-nav:pt-3 max-nav:border-t max-nav:border-line/70 nav:flex-row nav:items-center nav:gap-4">
+          {/* Book button & Direct Contact Cards at the bottom */}
+          <div className="mt-8 flex flex-col gap-4">
             <Link
               href="/tours"
               onClick={() => setOpen(false)}
-              className="whitespace-nowrap rounded-full bg-ocean-teal px-[22px] py-[12px] text-[0.94rem] font-extrabold text-white transition-colors hover:bg-cape-slate text-center shrink-0 shadow-sm"
+              className="w-full rounded-full bg-ocean-teal py-3.5 text-center text-[1rem] font-extrabold text-white shadow-md transition-colors hover:bg-cape-slate"
             >
-              Book
+              Book a Tour
             </Link>
 
-            <div className="flex flex-col text-[0.84rem] leading-snug max-nav:mt-4 max-nav:bg-white max-nav:rounded-xl max-nav:p-3.5 max-nav:border max-nav:border-line/80 max-nav:gap-2.5 nav:border-l nav:border-line/80 nav:pl-4">
+            <div className="flex flex-col gap-2 rounded-2xl bg-white p-4 border border-line shadow-sm">
+              <span className="text-[0.75rem] font-bold tracking-wider text-ink-soft uppercase">Contact Glen &amp; Ryan</span>
               <a
                 href="tel:+27774742397"
-                className="inline-flex items-center gap-2 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
+                className="flex items-center gap-3 font-bold text-cape-slate hover:text-ocean-teal transition-colors py-1.5"
               >
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                   </svg>
                 </span>
-                <span>+27 77 474 2397</span>
+                <span className="text-[0.95rem]">+27 77 474 2397</span>
               </a>
               <a
                 href="mailto:gmanningza@gmail.com"
-                className="inline-flex items-center gap-2 font-semibold text-cape-slate hover:text-ocean-teal transition-colors py-1 nav:py-0.5 whitespace-nowrap"
+                className="flex items-center gap-3 font-semibold text-cape-slate hover:text-ocean-teal transition-colors py-1.5"
               >
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-seafoam text-ocean-teal">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                     <polyline points="22,6 12,13 2,6" />
                   </svg>
                 </span>
-                <span className="text-[0.82rem]">gmanningza@gmail.com</span>
+                <span className="text-[0.88rem] truncate">gmanningza@gmail.com</span>
               </a>
             </div>
           </div>
-        </nav>
-      </div>
+        </div>
+      )}
     </header>
   );
 }
