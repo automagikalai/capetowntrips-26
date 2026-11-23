@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-ZA" className={`${jakarta.variable} ${nunito.variable}`}>
+    <html lang="en-ZA" data-scroll-behavior="smooth" className={`${jakarta.variable} ${nunito.variable}`}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(orgSchema()) }} />
         <Header />
