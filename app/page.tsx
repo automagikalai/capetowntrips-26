@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { ContactCta } from "@/components/ContactCta";
 import { Eyebrow } from "@/components/Eyebrow";
+import { Check, Shield } from "@/components/tour/Icons";
 import { TourCard } from "@/components/tour/TourCard";
 import { pageMeta } from "@/lib/seo";
 import { tours } from "@/lib/tours";
@@ -86,6 +87,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Trust & Safety Banner directly below hero */}
+      <aside aria-label="Accreditation and safety" className="border-y border-line bg-white py-4 shadow-sm">
+        <div className="container-page flex flex-wrap items-center justify-center gap-x-8 gap-y-2.5 text-center text-xs font-bold text-cape-slate sm:text-sm">
+          <span className="inline-flex items-center gap-2">
+            <Shield className="size-4 text-ocean-teal" />
+            Be safe with trained &amp; accredited guides
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <Check className="size-4 text-sunbird-gold" />
+            CATHSSETA registered tour guides
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <Check className="size-4 text-ocean-teal" />
+            Certified first-aid trained
+          </span>
+        </div>
+      </aside>
+
       {/* About / Intro Section */}
       <section className="py-[clamp(64px,8vw,104px)]">
         <div className="container-page">
@@ -107,21 +126,30 @@ export default function HomePage() {
                   Father and son guides who have spent decades exploring every
                   scenic pass, coastal village, and hidden vineyard of the Cape.
                 </p>
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="rounded-2xl border border-line bg-white/90 p-4">
-                    <strong className="block font-heading text-2xl font-black text-ocean-teal">
+                {/* On small screen sizes: stack vertically; on larger screens: side-by-side */}
+                <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                  <div className="rounded-2xl border border-line bg-white/90 p-3.5">
+                    <strong className="block font-heading text-lg font-black text-ocean-teal sm:text-xl">
                       100%
                     </strong>
-                    <span className="text-xs text-ink-soft">
-                      Private &amp; Tailored Options
+                    <span className="text-xs font-semibold text-ink-soft">
+                      Private &amp; Tailored
                     </span>
                   </div>
-                  <div className="rounded-2xl border border-line bg-white/90 p-4">
-                    <strong className="block font-heading text-2xl font-black text-ocean-teal">
+                  <div className="rounded-2xl border border-line bg-white/90 p-3.5">
+                    <strong className="block font-heading text-lg font-black text-ocean-teal sm:text-xl">
                       Door-to-door
                     </strong>
-                    <span className="text-xs text-ink-soft">
-                      Hotel Pickup &amp; Drop-off
+                    <span className="text-xs font-semibold text-ink-soft">
+                      Hotel Pick-up &amp; Drop-off
+                    </span>
+                  </div>
+                  <div className="rounded-2xl border border-line bg-white/90 p-3.5">
+                    <strong className="block font-heading text-lg font-black text-ocean-teal sm:text-xl">
+                      Safe &amp; Secure
+                    </strong>
+                    <span className="text-xs font-semibold text-ink-soft">
+                      CATHSSETA &amp; First-Aid
                     </span>
                   </div>
                 </div>
@@ -141,6 +169,9 @@ export default function HomePage() {
                 hospitality, and zero tourist-trap rush.
               </p>
               <p className="mt-4 text-[1.05rem] leading-relaxed text-ink-soft">
+                Be safe and secure with trained, accredited guides. Both Glen and Ryan are officially registered with CATHSSETA and trained in first aid, giving you complete confidence and care from hotel pick-up to drop-off.
+              </p>
+              <p className="mt-3 text-[1.05rem] leading-relaxed text-ink-soft">
                 From the summit of Table Mountain to the African penguins of
                 Boulders Beach and the quiet cellar doors of Franschhoek, our aim
                 is to make discovering Cape Town easy, welcoming, and

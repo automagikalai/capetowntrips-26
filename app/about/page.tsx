@@ -2,6 +2,7 @@ import { ContactCta } from "@/components/ContactCta";
 import { Eyebrow } from "@/components/Eyebrow";
 import { PersonSection } from "@/components/PersonSection";
 import { PortraitCard } from "@/components/PortraitCard";
+import { Shield } from "@/components/tour/Icons";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
@@ -23,6 +24,10 @@ const reasons = [
   {
     title: "Tailored adventures",
     text: "Whether you’re here for the scenery, the culture, the music, or the food, we shape every trip around what excites you most.",
+  },
+  {
+    title: "Accredited & safe",
+    text: "Accredited with CATHSSETA and trained in first aid. Be safe and secure knowing qualified local professionals are guiding your day.",
   },
 ];
 
@@ -104,13 +109,42 @@ export default function AboutPage() {
         </p>
       </PersonSection>
 
+      {/* Accreditation & Safety Section */}
+      <section className="border-y border-line bg-shell/80 py-12 md:py-16">
+        <div className="container-page">
+          <div className="mx-auto max-w-3xl rounded-[24px] border border-line bg-white p-7 shadow-card sm:p-10">
+            <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+              <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-seafoam text-ocean-teal sm:size-16">
+                <Shield className="size-7 sm:size-8" />
+              </div>
+              <div className="space-y-2">
+                <span className="inline-block rounded-full bg-seafoam px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-cape-slate">
+                  Trained &amp; Certified
+                </span>
+                <h3 className="font-heading text-xl font-extrabold text-cape-slate sm:text-2xl">
+                  Accredited with CATHSSETA &amp; First-Aid Trained
+                </h3>
+                <p className="text-[1.02rem] leading-relaxed text-ink-soft">
+                  Be safe and secure with trained and accredited guides. Both Glen and
+                  Ryan are officially accredited with CATHSSETA (Culture, Arts,
+                  Tourism, Hospitality and Sport Sector Education and Training
+                  Authority) and hold certified first-aid training. Whether we’re
+                  guiding you through the city or along the coastal passes, your
+                  safety, comfort, and peace of mind are always our priority.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-[94px] max-sm:py-[68px]">
         <div className="container-page">
           <div className="mb-[42px] max-w-[700px]">
             <Eyebrow>What you can expect</Eyebrow>
             <h2 className="mt-[17px] text-[clamp(2rem,4vw,3.35rem)]">Why travel with us?</h2>
           </div>
-          <div className="grid gap-[22px] md:grid-cols-3">
+          <div className="grid gap-[22px] sm:grid-cols-2 lg:grid-cols-4">
             {reasons.map(({ title, text }) => (
               <article
                 key={title}

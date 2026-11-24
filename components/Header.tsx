@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { tours } from "@/lib/tours";
 
 const navLinks = [
@@ -16,17 +16,34 @@ export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mobileToursOpen, setMobileToursOpen] = useState(false);
+  const [desktopToursOpen, setDesktopToursOpen] = useState(false);
+  const toursDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close mobile menu on Escape
+  // Close menus on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
         setMobileToursOpen(false);
+        setDesktopToursOpen(false);
       }
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Close desktop dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        toursDropdownRef.current &&
+        !toursDropdownRef.current.contains(e.target as Node)
+      ) {
+        setDesktopToursOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Reset mobile tours accordion when menu closes
@@ -36,10 +53,11 @@ export function Header() {
     }
   }, [open]);
 
-  // Close mobile menu on route change
+  // Close menus on route change
   useEffect(() => {
     setOpen(false);
     setMobileToursOpen(false);
+    setDesktopToursOpen(false);
   }, [pathname]);
 
   const toursActive = pathname === "/tours" || pathname.startsWith("/tours/");
@@ -88,51 +106,86 @@ export function Header() {
           aria-label="Main navigation"
           className="hidden nav:flex nav:items-center nav:gap-[clamp(16px,2.2vw,30px)] nav:ml-auto"
         >
-          {/* Tours hover dropdown (desktop only) */}
-          <div className="group relative py-3">
-            <Link
-              href="/tours"
-              className={`inline-flex items-center gap-1.5 whitespace-nowrap text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal ${
-                toursActive
-                  ? "text-ocean-teal shadow-[0_3px_0_var(--color-sunbird-gold)]"
-                  : "text-cape-slate"
-              }`}
-            >
-              Tours
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                aria-hidden="true"
-                className="transition-transform duration-200 group-hover:rotate-180"
+          {/* Tours dropdown (hover & click enabled, scrollable on smaller screens) */}
+          <div
+            ref={toursDropdownRef}
+            className="group relative py-3"
+            onMouseEnter={() => setDesktopToursOpen(true)}
+            onMouseLeave={() => setDesktopToursOpen(false)}
+          >
+            <div className="flex items-center">
+              <Link
+                href="/tours"
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap text-[0.94rem] font-extrabold transition-colors hover:text-ocean-teal ${
+                  toursActive
+                    ? "text-ocean-teal shadow-[0_3px_0_var(--color-sunbird-gold)]"
+                    : "text-cape-slate"
+                }`}
               >
-                <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
+                Tours
+              </Link>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDesktopToursOpen((prev) => !prev);
+                }}
+                aria-expanded={desktopToursOpen}
+                aria-label="Toggle tours dropdown menu"
+                className="cursor-pointer p-1 text-cape-slate transition-colors hover:text-ocean-teal"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  aria-hidden="true"
+                  className={`transition-transform duration-200 ${
+                    desktopToursOpen ? "rotate-180 text-ocean-teal" : "group-hover:rotate-180"
+                  }`}
+                >
+                  <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
 
             {/* Dropdown panel */}
-            <div className="absolute left-0 top-full pt-1.5 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto transition-all duration-150 z-50">
-              <div className="w-[320px] rounded-2xl border border-line bg-white p-2 shadow-lift">
-                <Link
-                  href="/tours"
-                  className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[0.84rem] font-bold text-ocean-teal hover:bg-seafoam transition-colors"
-                >
-                  View all tours →
-                </Link>
-                <div className="mx-4 my-1.5 border-t border-line" />
-                {tours.map((t) => (
+            <div
+              className={`absolute left-0 top-full pt-1.5 transition-all duration-150 z-50 ${
+                desktopToursOpen
+                  ? "opacity-100 visible pointer-events-auto"
+                  : "opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto"
+              }`}
+            >
+              <div className="w-[340px] max-h-[calc(100vh-120px)] overflow-y-auto overscroll-contain rounded-2xl border border-line bg-white p-2 shadow-lift [scrollbar-width:thin]">
+                <div className="sticky top-0 z-10 bg-white/95 pb-1 backdrop-blur-sm">
                   <Link
-                    key={t.slug}
-                    href={`/tours/${t.slug}`}
-                    className="flex items-start gap-3 rounded-xl px-4 py-2.5 hover:bg-seafoam transition-colors"
+                    href="/tours"
+                    onClick={() => setDesktopToursOpen(false)}
+                    className="flex items-center justify-between rounded-xl px-4 py-2.5 text-[0.84rem] font-bold text-ocean-teal transition-colors hover:bg-seafoam"
                   >
-                    <span className="flex-1">
-                      <span className="block text-[0.88rem] font-bold text-cape-slate leading-snug">{t.title}</span>
-                      <span className="block text-[0.78rem] text-ink-soft">{t.duration}</span>
-                    </span>
+                    <span>View all {tours.length} tours</span>
+                    <span>→</span>
                   </Link>
-                ))}
+                  <div className="mx-2 my-1 border-t border-line" />
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  {tours.map((t) => (
+                    <Link
+                      key={t.slug}
+                      href={`/tours/${t.slug}`}
+                      onClick={() => setDesktopToursOpen(false)}
+                      className={`flex items-start gap-3 rounded-xl px-4 py-2.5 transition-colors hover:bg-seafoam ${
+                        pathname === `/tours/${t.slug}` ? "bg-seafoam/40 font-bold text-ocean-teal" : ""
+                      }`}
+                    >
+                      <span className="flex-1">
+                        <span className="block text-[0.88rem] font-bold text-cape-slate leading-snug">{t.title}</span>
+                        <span className="block text-[0.78rem] text-ink-soft">{t.duration}</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
