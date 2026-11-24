@@ -6,15 +6,13 @@ import { Eyebrow } from "@/components/Eyebrow";
 import { BookingCard } from "@/components/tour/BookingCard";
 import { EnquiryForm } from "@/components/tour/EnquiryForm";
 import { FaqList } from "@/components/tour/FaqList";
-import { Gallery } from "@/components/tour/Gallery";
 import { HostsStrip } from "@/components/tour/HostsStrip";
 import { Check, Cross, Shield } from "@/components/tour/Icons";
-import { PlaceholderGallery } from "@/components/tour/PlaceholderGallery";
 import { StickyBar } from "@/components/tour/StickyBar";
 import { TourCard } from "@/components/tour/TourCard";
-import { TourFacts, quickAnswer } from "@/components/tour/TourFacts";
+import { InShort, TourFacts } from "@/components/tour/TourFacts";
 import { TourHero } from "@/components/tour/TourHero";
-import { formatRand, showPlaceholders, site, telHref, whatsappHref } from "@/lib/site";
+import { formatRand, site, telHref, whatsappHref } from "@/lib/site";
 import { breadcrumbSchema, jsonLd, pageMeta, tourSchema } from "@/lib/seo";
 import { getTourImages } from "@/lib/tour-images";
 import { getTourSeo } from "@/lib/tour-seo";
@@ -43,14 +41,27 @@ export default async function TourPage({ params }: Props) {
   const seo = getTourSeo(slug);
   if (!tour || !seo) notFound();
 
-  const { hero, heroAlt, gallery } = getTourImages(slug);
+  const { hero, heroAlt } = getTourImages(slug);
   const related = getRelated(tour);
-  const faqs = [...tour.faqs, ...seo.extraFaqs, ...commonFaqs];
+  const faqs = [
+    ...tour.faqs,
+    ...seo.extraFaqs,
+    ...commonFaqs.slice(0, seo.commonFaqCount ?? commonFaqs.length),
+  ];
+  // Section headings: generic by default, or question-style ones set per tour in lib/tour-seo.ts
+  const hd = {
+    overview: seo.headings?.overview ?? "What to expect",
+    facts: seo.headings?.facts ?? "Tour facts",
+    day: seo.headings?.day ?? "How it unfolds",
+    included: seo.headings?.included ?? "Included and not included",
+    know: seo.headings?.know ?? "Good to know",
+    faq: seo.headings?.faq ?? "Frequently asked",
+  };
 
   const strip = [
-    ["Duration", tour.duration],
+    ["Duration", `${tour.duration}, pick-up to drop-off`],
+    seo.travelTime ? ["Travel", seo.travelTime] : ["Pick-up", tour.pickup],
     ["Style", tour.format],
-    ["Pick-up", tour.pickup],
     ["Best time", tour.bestTime],
   ];
 
@@ -93,11 +104,8 @@ export default async function TourPage({ params }: Props) {
             {/* Overview */}
             <section aria-labelledby="overview">
               <Eyebrow>About this tour</Eyebrow>
-              <h2 id="overview" className={`${h2} mt-4`}>What to expect</h2>
-              <p className="mb-6 rounded-card border-l-4 border-sunbird-gold bg-white p-5 text-[1.05rem] leading-relaxed text-cape-slate">
-                <strong className="font-heading">In short: </strong>
-                {quickAnswer(tour)}
-              </p>
+              <h2 id="overview" className={`${h2} mt-4`}>{hd.overview}</h2>
+              <InShort tour={tour} seo={seo} />
               <div className="space-y-4 text-[1.05rem]">
                 {tour.summary.map((p) => (
                   <p key={p}>{p}</p>
@@ -116,27 +124,14 @@ export default async function TourPage({ params }: Props) {
             {/* Facts at a glance */}
             <section aria-labelledby="facts">
               <Eyebrow>At a glance</Eyebrow>
-              <h2 id="facts" className={`${h2} mt-4`}>Tour facts</h2>
+              <h2 id="facts" className={`${h2} mt-4`}>{hd.facts}</h2>
               <TourFacts tour={tour} seo={seo} />
             </section>
-
-            {/* Photos: real ones when added, placeholders while previewing */}
-            {gallery.length > 0 ? (
-              <section aria-label="Photos">
-                <Gallery images={gallery} title={tour.title} />
-              </section>
-            ) : (
-              showPlaceholders && (
-                <section aria-label="Photo placeholders">
-                  <PlaceholderGallery theme={tour.theme} />
-                </section>
-              )
-            )}
 
             {/* Itinerary */}
             <section id="itinerary" aria-labelledby="day">
               <Eyebrow>The day</Eyebrow>
-              <h2 id="day" className={`${h2} mt-4`}>How it unfolds</h2>
+              <h2 id="day" className={`${h2} mt-4`}>{hd.day}</h2>
               <ol className="relative space-y-7 border-l-2 border-seafoam pl-7">
                 {tour.itinerary.map((step) => (
                   <li key={step.title} className="relative">
@@ -162,7 +157,7 @@ export default async function TourPage({ params }: Props) {
             {/* Included */}
             <section aria-labelledby="included">
               <Eyebrow>What’s covered</Eyebrow>
-              <h2 id="included" className={`${h2} mt-4`}>Included and not included</h2>
+              <h2 id="included" className={`${h2} mt-4`}>{hd.included}</h2>
               <div className="grid gap-5 md:grid-cols-2">
                 <div className="rounded-card border border-line bg-white p-6">
                   <h3 className="mb-4 text-[1.1rem]">Included</h3>
@@ -186,7 +181,7 @@ export default async function TourPage({ params }: Props) {
             {/* Good to know + safety */}
             <section aria-labelledby="know">
               <Eyebrow>Before you go</Eyebrow>
-              <h2 id="know" className={`${h2} mt-4`}>Good to know</h2>
+              <h2 id="know" className={`${h2} mt-4`}>{hd.know}</h2>
               <ul className="space-y-3">
                 {tour.goodToKnow.map((g) => (
                   <li key={g} className="flex gap-3"><span aria-hidden="true" className="mt-2.5 size-2 shrink-0 rounded-full bg-sunbird-gold" />{g}</li>
@@ -206,7 +201,7 @@ export default async function TourPage({ params }: Props) {
             {/* FAQs */}
             <section aria-labelledby="faq">
               <Eyebrow>Questions</Eyebrow>
-              <h2 id="faq" className={`${h2} mt-4`}>Frequently asked</h2>
+              <h2 id="faq" className={`${h2} mt-4`}>{hd.faq}</h2>
               <FaqList faqs={faqs} />
             </section>
           </div>

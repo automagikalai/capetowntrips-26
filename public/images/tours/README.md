@@ -4,20 +4,21 @@ Each tour has its own folder, named after its web address. Drop photos in and re
 
 | File name | What it is | Needed? |
 |---|---|---|
-| `hero-<what-it-shows>.jpg` | The big photo at the top of the page and on the tour card. Starts with `hero`. | Yes, one per tour |
-| `<what-it-shows>.jpg` | Extra photos shown in a grid under "Tour facts" (1 to 6) | Optional |
+| `hero-<what-it-shows>.webp` | The one big photo at the top of the tour page, also used on the tour card. The name must start with `hero`. | Yes, one per tour |
 
-`.png`, `.webp` and `.avif` also work. If no file starts with `hero`, the first photo in the folder is used.
+Each tour uses a single hero photo. Any other files in the folder are ignored.
+
+**Save photos as WebP** (quality about 80): small files that load fast. `.jpg`, `.png` and `.avif` also work.
 
 ## Name photos for search (this matters)
 Use descriptive, lowercase, hyphenated file names. They help Google Images and they become the default alt text for screen readers automatically.
 
-- `hero-boulders-beach-penguins-simons-town.jpg` gives alt text "Boulders beach penguins simons town"
-- `chapmans-peak-drive-hout-bay.jpg`
-- Avoid `IMG_4521.jpg`, `hero.jpg` or `photo1.jpg`. These still work, but the alt text then falls back to a generic description written in `lib/tour-seo.ts` (`imageAlt`), so check that it matches the photo you upload.
+- `hero-boulders-beach-penguins-simons-town.webp` gives alt text "Boulders beach penguins simons town"
+- `chapmans-peak-drive-hout-bay.webp`
+- Avoid `IMG_4521.webp`, `hero.webp` or `photo1.webp`. These still work, but the alt text then falls back to a generic description written in `lib/tour-seo.ts` (`imageAlt`), so check that it matches the photo you upload.
 
 ## Photo guidance
-- **Landscape, not portrait.** Hero: at least 2000 x 1125 px (16:9). Gallery: at least 1600 x 1200 px (4:3).
+- **Landscape, not portrait.** Hero: 1920 x 1080 px (16:9), ideally under 300 KB.
 - **Real photos from your own tours** beat stock photos for trust. Show people enjoying the experience, with the landmark behind them.
 - Keep the main subject in the middle: the hero is cropped differently on phones and desktops.
 - Large originals are fine. The site resizes and compresses them automatically.

@@ -16,6 +16,15 @@ export function quickAnswer(tour: Tour) {
   ].join(" ");
 }
 
+export function InShort({ tour, seo }: { tour: Tour; seo: TourSeo }) {
+  return (
+    <p className="mb-6 rounded-card border-l-4 border-sunbird-gold bg-white p-5 text-[1.05rem] leading-relaxed text-cape-slate">
+      <strong className="font-heading">In short: </strong>
+      {seo.inShort ?? quickAnswer(tour)}
+    </p>
+  );
+}
+
 /** Plain-language facts, laid out so people (and search and AI tools) can quote them. */
 export function TourFacts({ tour, seo }: { tour: Tour; seo: TourSeo }) {
   const rows: [string, string][] = [

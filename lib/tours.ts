@@ -1,3 +1,5 @@
+import { sharkTour } from "./shark-cage-diving-gansbaai";
+
 /**
  * All tour content lives here. To change a price, itinerary or FAQ, edit this file.
  * Anything marked CONFIRM is a sensible draft that Glen should check before launch.
@@ -359,6 +361,7 @@ export const tours: Tour[] = [
     theme: "road",
     related: ["hermanus-whale-watching-tour", "day-safari-from-cape-town", "cape-winelands-wine-tour"],
   },
+  sharkTour,
 ];
 
 export const getTour = (slug: string) => tours.find((t) => t.slug === slug);

@@ -6,6 +6,8 @@
  *  - extraFaqs: real questions people ask, answered directly in the first sentence
  * Anything marked CONFIRM is a draft that Glen should check against how the tour really runs.
  */
+import { sharkSeo } from "./shark-cage-diving-gansbaai";
+
 export type TourSeo = {
   h1: string;
   seoTitle: string;
@@ -16,6 +18,18 @@ export type TourSeo = {
   /** Describe what the real hero photo shows. Check it matches the photo you upload. */
   imageAlt: string;
   extraFaqs: { q: string; a: string }[];
+  inShort?: string;
+  travelTime?: string;
+  timeOnSite?: string;
+  headings?: {
+    overview?: string;
+    facts?: string;
+    day?: string;
+    included?: string;
+    know?: string;
+    faq?: string;
+  };
+  commonFaqCount?: number;
 };
 
 export const tourSeo: Record<string, TourSeo> = {
@@ -149,6 +163,7 @@ export const tourSeo: Record<string, TourSeo> = {
       { q: "Can you arrange a corporate or group race day?", a: "Yes. Groups, birthdays and corporate days out are welcome. Tell us the group size and occasion in your enquiry and we will plan it." },
     ],
   },
+  "shark-cage-diving-gansbaai": sharkSeo,
 };
 
 export const getTourSeo = (slug: string) => tourSeo[slug];

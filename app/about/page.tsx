@@ -47,8 +47,8 @@ export default function AboutPage() {
         name="Meet Glen Manning"
         portrait={
           <PortraitCard
-            alt="Photo of Glen Manning coming soon"
-            placeholderLabel="Photo of Glen coming soon"
+            src="/images/glen-manning.webp"
+            alt="Glen Manning, founder and guide at Cape Town Trips"
           />
         }
       >

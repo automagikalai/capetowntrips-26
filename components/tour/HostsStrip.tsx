@@ -3,14 +3,23 @@ import Link from "next/link";
 import { publicFileExists } from "@/lib/tour-images";
 import { site } from "@/lib/site";
 
-/** Two small host portraits. Glen's appears automatically once public/images/glen-manning.jpg exists. */
+/** Two small host portraits. Glen's appears automatically once public/images/glen-manning.webp (or jpg) exists. */
 export function HostsStrip() {
-  const hasGlen = publicFileExists("images/glen-manning.jpg");
+  const hasGlen =
+    publicFileExists("images/glen-manning.webp") ||
+    publicFileExists("images/glenn-manning.webp") ||
+    publicFileExists("images/glen-manning.jpg");
+  const glenSrc = publicFileExists("images/glen-manning.webp")
+    ? "/images/glen-manning.webp"
+    : publicFileExists("images/glenn-manning.webp")
+    ? "/images/glenn-manning.webp"
+    : "/images/glen-manning.jpg";
+
   return (
     <div className="flex items-center gap-3">
       <div className="flex -space-x-3">
         {hasGlen ? (
-          <Image src="/images/glen-manning.jpg" alt="Glen Manning" width={96} height={96} className="size-12 rounded-full border-2 border-white object-cover" />
+          <Image src={glenSrc} alt="Glen Manning" width={96} height={96} className="size-12 rounded-full border-2 border-white object-cover" />
         ) : (
           <span aria-hidden="true" className="grid size-12 place-items-center rounded-full border-2 border-white bg-seafoam font-heading font-extrabold text-cape-slate">G</span>
         )}

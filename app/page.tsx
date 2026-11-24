@@ -185,7 +185,7 @@ export default function HomePage() {
 
           <div className="mt-12 flex justify-center">
             <Button href="/tours" variant="secondary">
-              View all 9 Cape Town tours →
+              View all {tours.length} Cape Town tours →
             </Button>
           </div>
         </div>
