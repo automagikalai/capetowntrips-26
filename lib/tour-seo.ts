@@ -132,7 +132,7 @@ export const tourSeo: Record<string, TourSeo> = {
     extraFaqs: [
       { q: "How far is the Garden Route from Cape Town?", a: "The Garden Route starts around Mossel Bay and runs on to the Tsitsikamma coast. We plan generous stops so the drive is part of the trip." },
       { q: "Is three days enough for the Garden Route?", a: "Three days is enough for the highlights at an unhurried pace. If you have longer, we can add nights and activities." },
-      { q: "Which towns does the tour visit?", a: "Hermanus, Mossel Bay, Knysna, Plettenberg Bay and the Wilderness lakes by default, but we shape the route around what you want to see." }, // CONFIRM route
+      { q: "Which towns does the tour visit?", a: "Oudtshoorn (for the Cango Caves and ostrich farm), Mossel Bay, Knysna, Plettenberg Bay and the Wilderness lakes by default, but we shape the route around what you want to see." }, // CONFIRM route
     ],
   },
   "day-safari-from-cape-town": {

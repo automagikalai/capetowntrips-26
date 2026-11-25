@@ -341,15 +341,15 @@ export const tours: Tour[] = [
     pickup: "Collected in Cape Town",
     bestTime: "Year-round. Spring and autumn are particularly pleasant.",
     highlights: [
-      "Hermanus, Mossel Bay, Knysna and Plettenberg Bay",
-      "Lagoons, forests and coastline on one route",
-      "Time to hike, swim, taste and explore",
+      "Oudtshoorn with the Cango Caves and an Ostrich Farm",
+      "Mossel Bay, Knysna and Plettenberg Bay",
+      "Lagoons, indigenous forests and coastline on one route",
       "A route you can reshape with us before you go",
     ],
     itinerary: [
-      { when: "Day 1", title: "Cape Town to the Garden Route", text: "Leave the city and travel along the coast through the Overberg, with a stop in Hermanus before heading on towards Mossel Bay." },
-      { when: "Day 2", title: "Knysna and Plettenberg Bay", text: "Explore the lagoon at Knysna, the forests and the beaches of Plettenberg Bay, with time to choose your own adventure." },
-      { when: "Day 3", title: "A slower way back", text: "Take in the Wilderness lakes, then enjoy the scenery on the journey back to Cape Town." },
+      { when: "Day 1", title: "Cape Town to Oudtshoorn via Route 62", text: "Head through the Klein Karoo to Oudtshoorn to explore the limestone chambers of the Cango Caves and visit an ostrich farm." },
+      { when: "Day 2", title: "Across the Outeniqua Pass to Knysna & Plettenberg Bay", text: "Descend to the coast to explore the lagoon and heads at Knysna, ancient indigenous forests, and the pristine beaches of Plettenberg Bay." },
+      { when: "Day 3", title: "Wilderness and the scenic route home", text: "Take in the Wilderness lakes, coastal views through Mossel Bay, and the Overberg on the relaxed journey back to Cape Town." },
     ],
     included: ["A private guide and vehicle for all three days", "Pick-up and drop-off in Cape Town", "A route planned with you", "Accommodation and meals are confirmed on our call"], // CONFIRM what the R25 000 covers
     notIncluded: ["Items we agree are extra when we plan your trip", "Gratuities"],
