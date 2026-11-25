@@ -8,8 +8,7 @@ import { tours } from "@/lib/tours";
 
 const navLinks = [
   { href: "/about", label: "About" },
-  { href: "/#contact", label: "Contact" },
-  { href: "/#explore", label: "Explore" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Header() {
@@ -211,10 +210,10 @@ export function Header() {
 
           {/* Book Button */}
           <Link
-            href="/tours"
+            href="/book"
             className="whitespace-nowrap rounded-full bg-ocean-teal px-[22px] py-[11px] text-[0.94rem] font-extrabold text-white transition-colors hover:bg-cape-slate shrink-0"
           >
-            Book
+            Book a Tour
           </Link>
 
           {/* Contact Details (Desktop) */}
@@ -327,7 +326,7 @@ export function Header() {
           {/* Book button & Direct Contact Cards at the bottom */}
           <div className="mt-6 flex flex-col gap-3">
             <Link
-              href="/tours"
+              href="/book"
               onClick={() => setOpen(false)}
               className="w-full rounded-full bg-ocean-teal py-3.5 text-center text-[1rem] font-extrabold text-white shadow-md transition-colors hover:bg-cape-slate"
             >

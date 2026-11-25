@@ -4,8 +4,8 @@ import { site, telHref } from "@/lib/site";
 const links = [
   { href: "/about", label: "About" },
   { href: "/tours", label: "Tours" },
-  { href: "/#explore", label: "Explore" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/book", label: "Book a Tour" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Footer() {

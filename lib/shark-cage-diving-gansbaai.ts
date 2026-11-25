@@ -35,7 +35,7 @@ export const sharkTour: Tour = {
     "Hotel pick-up and drop-off in Cape Town",
   ],
   itinerary: [
-    { when: "Early start", title: "Pick-up and the two-hour drive to Gansbaai", text: "We collect you from your hotel and take the scenic coast road to Gansbaai, about two hours away." },
+    { when: "Early start", title: "Pick-up and scenic drive to Gansbaai", text: "We collect you from your hotel and take the scenic coast road to Gansbaai." },
     { when: "On arrival", title: "Breakfast and safety briefing", text: "A light breakfast, then a briefing from the crew on how the dive works and what to expect." },
     { when: "Out on the water", title: "Boat trip and cage dive", text: "Head out by boat to the shark grounds. Guests take turns in the cage, with the sharks swimming right alongside." },
     { when: "After the dive", title: "Lunch, then the two-hour drive back", text: "A light lunch and a chance to warm up, then the drive back to Cape Town and drop-off at your hotel, about 7 hours after pick-up." },
@@ -71,7 +71,7 @@ export const sharkSeo: TourSeo = {
     "Shark cage diving in Gansbaai: come face to face with a great white, a two-hour drive from your hotel. No diving experience needed. Enquire to book.",
   inShort:
     "A shark cage diving tour to Gansbaai, about two hours from your hotel in Cape Town. Hotel pick-up and drop-off are included, and the day takes about 7 hours in total. You head out by boat to meet great white sharks from the safety of a cage, and no diving experience is needed.",
-  travelTime: "About 2 hours each way, from your hotel in Cape Town to Gansbaai",
+  travelTime: "Scenic drive from your hotel in Cape Town to Gansbaai",
   timeOnSite: "About 3 hours at Gansbaai: breakfast, briefing, boat trip, cage dive and lunch", // CONFIRM
   startTime: "Early-morning pick-up, often around 7:00 and confirmed the day before", // CONFIRM
   fitness: "Moderate. Surface cage, no diving experience needed",

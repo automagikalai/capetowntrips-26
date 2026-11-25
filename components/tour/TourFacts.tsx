@@ -8,7 +8,7 @@ const stop = (s: string) => (/[.!?]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`
 /** A direct, quotable answer (about 50 words) built from the tour's own facts. */
 export function quickAnswer(tour: Tour) {
   return [
-    `${tour.title}: ${lower(tour.duration)} from Cape Town.`,
+    `${tour.title}.`,
     stop(tour.pickup),
     `It costs from ${formatRand(tour.price)} ${site.priceBasis} (about ${formatForeign(tour.price)}).`,
     stop(tour.bestTime),
@@ -28,8 +28,8 @@ export function InShort({ tour, seo }: { tour: Tour; seo: TourSeo }) {
 /** Plain-language facts, laid out so people (and search and AI tools) can quote them. */
 export function TourFacts({ tour, seo }: { tour: Tour; seo: TourSeo }) {
   const rows: [string, string][] = [
-    ["Price", `From ${formatRand(tour.price)} ${site.priceBasis} (about ${formatForeign(tour.price)})`],
-    ["Duration", tour.duration],
+    ["Price", `From ${formatRand(tour.price)} ${site.priceBasis}`],
+    ["Duration", `${tour.duration}, pick-up to drop-off`],
     ["Start time", seo.startTime],
     ["Pick-up", `${tour.pickup}. Areas: ${facts.pickupAreas}`],
     ["Group size and style", tour.format],
@@ -44,7 +44,14 @@ export function TourFacts({ tour, seo }: { tour: Tour; seo: TourSeo }) {
       {rows.map(([term, value]) => (
         <div key={term} className="bg-white p-5">
           <dt className="mb-1 text-[0.78rem] font-black uppercase tracking-[0.12em] text-ocean-teal">{term}</dt>
-          <dd className="text-[0.95rem] leading-snug text-cape-slate">{value}</dd>
+          <dd className="text-[0.95rem] leading-snug text-cape-slate">
+            {term === "Price" ? (
+              <>
+                <span>{value}</span>
+                <span className="block text-[0.82rem] text-ink-soft">About {formatForeign(tour.price)}</span>
+              </>
+            ) : value}
+          </dd>
         </div>
       ))}
     </dl>

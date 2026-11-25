@@ -117,7 +117,7 @@ export const tourSeo: Record<string, TourSeo> = {
     imageAlt: "Langebaan Lagoon and white beaches on the West Coast near Cape Town",
     extraFaqs: [
       { q: "What is there to see on the West Coast?", a: "West Coast National Park and Langebaan Lagoon, the fishing village of Paternoster, and a seafood lunch by the sea. In spring the veld is covered in wild flowers." }, // CONFIRM stops
-      { q: "How far is the West Coast from Cape Town?", a: "Langebaan and Paternoster are roughly 1.5 to 2 hours’ drive from the city, so the day mixes a scenic drive with time at each stop." },
+      { q: "How far is the West Coast from Cape Town?", a: "The day mixes a scenic coastal drive with time to explore each stop at an unhurried pace." },
     ],
   },
   "3-day-garden-route-tour": {
@@ -130,7 +130,7 @@ export const tourSeo: Record<string, TourSeo> = {
     ages: "All ages. Tell us who is travelling", // CONFIRM
     imageAlt: "Coastline and lagoon at Knysna on the Garden Route",
     extraFaqs: [
-      { q: "How far is the Garden Route from Cape Town?", a: "The Garden Route starts around Mossel Bay, roughly 4.5 to 5 hours’ drive from Cape Town, and runs on to the Tsitsikamma coast. We plan generous stops so the drive is part of the trip." },
+      { q: "How far is the Garden Route from Cape Town?", a: "The Garden Route starts around Mossel Bay and runs on to the Tsitsikamma coast. We plan generous stops so the drive is part of the trip." },
       { q: "Is three days enough for the Garden Route?", a: "Three days is enough for the highlights at an unhurried pace. If you have longer, we can add nights and activities." },
       { q: "Which towns does the tour visit?", a: "Hermanus, Mossel Bay, Knysna, Plettenberg Bay and the Wilderness lakes by default, but we shape the route around what you want to see." }, // CONFIRM route
     ],
@@ -145,7 +145,7 @@ export const tourSeo: Record<string, TourSeo> = {
     ages: "The reserve’s age limits for game drives apply", // CONFIRM
     imageAlt: "Elephants on a game drive in a private reserve in the Western Cape",
     extraFaqs: [
-      { q: "How far is the safari from Cape Town?", a: "The reserve is roughly two hours’ drive from Cape Town, so we leave early and return in the evening. We confirm the reserve and timing when you book." }, // CONFIRM reserve name
+      { q: "How far is the safari from Cape Town?", a: "The private reserve is located outside Cape Town, so we leave early and return in the evening. We confirm the reserve and timing when you book." }, // CONFIRM reserve name
       { q: "Can you see the Big Five near Cape Town?", a: "Yes. A private reserve in the Western Cape can offer lion, elephant, rhino, buffalo and leopard, though sightings are never guaranteed and leopards in particular are elusive." },
     ],
   },

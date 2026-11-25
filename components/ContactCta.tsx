@@ -13,13 +13,13 @@ export function ContactCta({
   text = "Let’s plan your Cape Town adventure.",
 }: ContactCtaProps) {
   return (
-    <section id="contact" className="bg-cape-slate py-[84px] text-center text-white max-sm:py-[68px]">
+    <section id="contact" className="bg-white py-[84px] text-center max-sm:py-[68px]">
       <div className="container-page">
-        <Eyebrow onDark>{eyebrow}</Eyebrow>
-        <h2 className="mx-auto mb-3.5 mt-4 max-w-[760px] text-[clamp(2rem,4vw,3.35rem)] text-white!">
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <h2 className="mx-auto mb-3.5 mt-4 max-w-[760px] text-[clamp(2rem,4vw,3.35rem)] text-cape-slate!">
           {title}
         </h2>
-        <p className="mx-auto max-w-[560px] text-[1.1rem] text-white/80!">{text}</p>
+        <p className="mx-auto max-w-[560px] text-[1.1rem] text-ink-soft!">{text}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3.5">
           <Button
             variant="gold"
@@ -27,7 +27,7 @@ export function ContactCta({
           >
             Book your experience
           </Button>
-          <Button variant="ghost" href="/tours">
+          <Button variant="secondary" href="/tours">
             See our tours
           </Button>
         </div>

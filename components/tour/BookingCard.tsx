@@ -12,7 +12,7 @@ export function BookingCard({ tour }: { tour: Tour }) {
         {formatRand(tour.price)}
       </p>
       <p className="mt-1 text-[0.92rem]">{site.priceBasis}</p>
-      <p className="mb-5 text-[0.82rem]">About {formatForeign(tour.price)} (rates change)</p>
+      <p className="mb-5 text-[0.78rem] text-ink-soft">About {formatForeign(tour.price)} (rates change)</p>
 
       <ul className="mb-6 space-y-2.5 text-[0.95rem]">
         {[

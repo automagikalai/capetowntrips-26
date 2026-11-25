@@ -28,9 +28,9 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section with responsive photographic background */}
-      <section className="relative isolate flex min-h-[620px] items-center overflow-hidden bg-[#0b1a24] py-24 md:min-h-[780px] md:py-0">
+      <section className="relative isolate flex min-h-[480px] items-start overflow-hidden bg-[#0b1a24] pt-2 pb-24 md:min-h-[640px] md:pb-0">
         {/* Responsive Background image: mobile portrait at <=767px, landscape on desktop */}
-        <picture>
+        <picture className="absolute inset-0 -z-20 h-full w-full">
           <source
             media="(max-width: 767px)"
             srcSet="/images/cape-town-hero-mobile.webp"
@@ -39,7 +39,8 @@ export default function HomePage() {
           <img
             src="/images/cape-town-hero.webp"
             alt="Aerial view of Table Mountain, Lion's Head and the Cape Town city bowl"
-            className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:object-[60%_40%]"
+            className="h-full w-full object-cover object-top"
+            style={{ objectPosition: 'center top' }}
             fetchPriority="high"
             decoding="async"
           />
@@ -56,7 +57,7 @@ export default function HomePage() {
           className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/60 to-black/20 md:hidden"
         />
 
-        <div className="container-page relative z-10 py-12 md:py-20">
+        <div className="container-page relative z-10 pt-1 pb-12 md:pt-2 md:pb-20">
           <Eyebrow onDark>Your Cape Town adventure starts here</Eyebrow>
           <h1 className="mb-5 mt-4 max-w-[780px] text-[clamp(2.5rem,6vw,5.2rem)] font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-md">
             See more. Feel more.{" "}
@@ -110,45 +111,41 @@ export default function HomePage() {
         <div className="container-page">
           <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             {/* Visual highlight */}
-            <div className="relative overflow-hidden rounded-[28px] border border-line bg-gradient-to-br from-seafoam via-shell to-[#f8dfaa] p-8 shadow-card md:p-12">
-              <span
-                className="absolute -right-8 -top-8 size-36 rounded-full bg-sunbird-gold/30"
-                aria-hidden="true"
-              />
-              <div className="relative z-10 space-y-4">
-                <span className="inline-block rounded-full bg-white/80 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-ocean-teal">
+            <div className="rounded-[28px] bg-cape-slate p-8 shadow-card md:p-12">
+              <div className="space-y-4">
+                <span className="inline-block rounded-full bg-white/15 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-seafoam">
                   Local Family Team
                 </span>
-                <h3 className="font-heading text-2xl font-extrabold text-cape-slate md:text-3xl">
+                <h3 className="font-heading text-2xl font-extrabold text-white md:text-3xl">
                   Glen &amp; Ryan Manning
                 </h3>
-                <p className="text-ink-soft">
+                <p className="text-white/75">
                   Father and son guides who have spent decades exploring every
                   scenic pass, coastal village, and hidden vineyard of the Cape.
                 </p>
                 {/* On small screen sizes: stack vertically; on larger screens: side-by-side */}
                 <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                  <div className="rounded-2xl border border-line bg-white/90 p-3.5">
-                    <strong className="block font-heading text-lg font-black text-ocean-teal sm:text-xl">
+                  <div className="rounded-2xl border border-white/15 bg-white/10 p-3.5">
+                    <strong className="block font-heading text-lg font-black text-sunbird-gold sm:text-xl">
                       100%
                     </strong>
-                    <span className="text-xs font-semibold text-ink-soft">
+                    <span className="text-xs font-semibold text-white/70">
                       Private &amp; Tailored
                     </span>
                   </div>
-                  <div className="rounded-2xl border border-line bg-white/90 p-3.5">
-                    <strong className="block font-heading text-lg font-black text-ocean-teal sm:text-xl">
+                  <div className="rounded-2xl border border-white/15 bg-white/10 p-3.5">
+                    <strong className="block font-heading text-lg font-black text-sunbird-gold sm:text-xl">
                       Door-to-door
                     </strong>
-                    <span className="text-xs font-semibold text-ink-soft">
+                    <span className="text-xs font-semibold text-white/70">
                       Hotel Pick-up &amp; Drop-off
                     </span>
                   </div>
-                  <div className="rounded-2xl border border-line bg-white/90 p-3.5">
-                    <strong className="block font-heading text-lg font-black text-ocean-teal sm:text-xl">
+                  <div className="rounded-2xl border border-white/15 bg-white/10 p-3.5">
+                    <strong className="block font-heading text-lg font-black text-sunbird-gold sm:text-xl">
                       Safe &amp; Secure
                     </strong>
-                    <span className="text-xs font-semibold text-ink-soft">
+                    <span className="text-xs font-semibold text-white/70">
                       CATHSSETA &amp; First-Aid
                     </span>
                   </div>

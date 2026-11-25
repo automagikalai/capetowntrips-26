@@ -239,7 +239,6 @@ export default async function TourPage({ params }: Props) {
               </ol>
 
               <div className="space-y-3 rounded-card border border-line bg-shell p-6">
-                <HostsStrip />
                 <p className="text-[0.92rem]">
                   Prefer to talk now? Email{" "}
                   <a className="font-bold text-ocean-teal underline decoration-sunbird-gold decoration-2 underline-offset-4" href={`mailto:${site.email}?subject=${encodeURIComponent(`Enquiry: ${tour.title}`)}`}>{site.email}</a>
